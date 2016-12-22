@@ -70,6 +70,6 @@ def lambda_handler(event, context):
 
     except Exception as E:
         response['Status'] = 'FAILED'
-        response['Reason'] = 'Encryption Failed - See CloudWatch logs for the Lamba function backing the custom resource for details'
+        response['Reason'] = 'Encryption Failed - See CloudWatch logs for the Lambda function backing the custom resource for details'
 
     return send_response(event, response)

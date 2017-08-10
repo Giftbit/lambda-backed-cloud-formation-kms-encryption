@@ -28,7 +28,10 @@ import httplib
 import urlparse
 import json
 import boto3
+import logging
 
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 def send_response(request, response, status=None, reason=None):
     """ Send our response to the pre-signed URL supplied by CloudFormation
@@ -53,6 +56,7 @@ def send_response(request, response, status=None, reason=None):
 
 
 def lambda_handler(event, context):
+    logger.info('got event RequestType={}'.format(event['RequestType']))
 
     response = {
         'StackId': event['StackId'],
@@ -93,6 +97,7 @@ def lambda_handler(event, context):
         response['Reason'] = 'The value was successfully encrypted'
 
     except Exception as E:
+        logger.exception(E)
         response['Status'] = 'FAILED'
         response['Reason'] = 'Encryption Failed - See CloudWatch logs for the Lambda function backing the custom resource for details'
 
